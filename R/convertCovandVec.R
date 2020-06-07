@@ -5,6 +5,7 @@
 ### Author: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 ### maintainer: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 #################################################################
+
 #' function to covert a covariance matrix (vector) to a vector 
 #' (covariance matrix) with a special structure allowing 
 #' non-zero correlation only for two successive variables.

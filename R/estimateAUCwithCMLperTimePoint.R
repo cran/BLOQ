@@ -28,11 +28,18 @@
 #' @param printCMLmessage logical variable with TRUE as default, if TRUE then
 #' messages regarding the convergence status of censored 
 #' log-likelihood maximization will be printed.
+#' @param optimizationMethod single string specifying the method to be used for optimizing the log-likelihood, 
+#' the default is NULL that allows the function to decide the about the best method. Otherwise, one can select among choices
+#' available via R package maxLik: "NR" (for Newton-Raphson), "BFGS" (for Broyden-Fletcher-Goldfarb-Shanno), 
+#' "BFGSR" (for the BFGS algorithm implemented in R), 
+#' "BHHH" (for Berndt-Hall-Hall-Hausman), "SANN" (for Simulated ANNealing), 
+#' "CG" (for Conjugate Gradients), or "NM" (for Nelder-Mead). 
+#' Lower-case letters (such as "nr" for Newton-Raphson) are allowed.
 #' @param CMLcontrol list of arguments to control 
 #' convergence of maximization algorithm. It is the same argument
 #' as control in the function maxLik in the R package maxLik
 #' @return a list with three components: output of maxLik function,
-#' estimated parameters for
+#' estimated parameters for 
 #' each column using censored maximum likelihood, and estimated
 #' AUC and its standard error.
 #' @seealso \href{https://www.rdocumentation.org/packages/maxLik/versions/1.3-4/topics/maxLik}{maxLik}
@@ -47,7 +54,7 @@
 #' @export
 estimateAUCwithCMLperTimePoint <- function(inputData, LOQ, 
 		timePoints, isMultiplicative = FALSE, onlyFitCML = FALSE,
-		printCMLmessage = TRUE, CMLcontrol = NULL){
+		printCMLmessage = TRUE, optimizationMethod = NULL, CMLcontrol = NULL){
 	## With multiplicative error, dur to takign logarithm,
 	## zero values are not allowed, so first we check this 
 	if (isMultiplicative & any(inputData <= 0)){
@@ -63,8 +70,8 @@ columns of input Data should be the same.")
 	## First based on the value of isMultiplicative the log of the
 	## data as well as the LOQ will be taken.
 	if (isMultiplicative){
-		inputData <- log(inputData)
-		LOQ <- log(LOQ)
+		inputData <- log10(inputData)
+		LOQ <- log10(LOQ)
 	}
 	## Cheking if there are any BLOQs, if not just jump to the
 	## AUC calculations
@@ -116,8 +123,14 @@ columns of input Data should be the same.")
 											sd = sd, log = TRUE)))
 				}
 				# estimate the parameters using CML
-				fitCML <- try(maxLik(logLik = logLikCensoredFun, 
-						start = c(mean = 0, sd = 1), control = CMLcontrol))
+		if (is.null(optimizationMethod)){
+			fitCML <- try(maxLik(logLik = logLikCensoredFun, 
+							start = c(mean = 0, sd = 1), control = CMLcontrol))
+		}else{
+			fitCML <- try(maxLik(logLik = logLikCensoredFun, 
+							start = c(mean = 0, sd = 1), method = optimizationMethod,control = CMLcontrol))
+		}
+				
 				# controlling non-conbvergence issues: if the parameters
 				# cannot be estimated using censored maximum likelihood
 				# then the function stops

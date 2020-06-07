@@ -7,5 +7,5 @@ export("estimateAUCandStdErr", "estimateAUCwithCMLperTimePoint",
              "rnorm", "runif", "sd", "var", "complete.cases")
   importFrom("utils", "flush.console", "combn")
   importFrom("mvtnorm", "pmvnorm", "dmvnorm")
-  importFrom("mvnmle", "mlest")  
   importFrom("maxLik", "maxLik")    
+  importFrom("stats", "cov")

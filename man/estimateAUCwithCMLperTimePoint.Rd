@@ -5,9 +5,16 @@
 \alias{estimateAUCwithCMLperTimePoint}
 \title{estimate AUC with censored maximum likelihood per time point}
 \usage{
-estimateAUCwithCMLperTimePoint(inputData, LOQ, timePoints,
-  isMultiplicative = FALSE, onlyFitCML = FALSE,
-  printCMLmessage = TRUE, CMLcontrol = NULL)
+estimateAUCwithCMLperTimePoint(
+  inputData,
+  LOQ,
+  timePoints,
+  isMultiplicative = FALSE,
+  onlyFitCML = FALSE,
+  printCMLmessage = TRUE,
+  optimizationMethod = NULL,
+  CMLcontrol = NULL
+)
 }
 \arguments{
 \item{inputData}{numeric matrix or data frame of the size 
@@ -29,13 +36,21 @@ censored maximum likelihood estimates will be calculated}
 messages regarding the convergence status of censored 
 log-likelihood maximization will be printed.}
 
+\item{optimizationMethod}{single string specifying the method to be used for optimizing the log-likelihood, 
+the default is NULL that allows the function to decide the about the best method. Otherwise, one can select among choices
+available via R package maxLik: "NR" (for Newton-Raphson), "BFGS" (for Broyden-Fletcher-Goldfarb-Shanno), 
+"BFGSR" (for the BFGS algorithm implemented in R), 
+"BHHH" (for Berndt-Hall-Hall-Hausman), "SANN" (for Simulated ANNealing), 
+"CG" (for Conjugate Gradients), or "NM" (for Nelder-Mead). 
+Lower-case letters (such as "nr" for Newton-Raphson) are allowed.}
+
 \item{CMLcontrol}{list of arguments to control 
 convergence of maximization algorithm. It is the same argument
 as control in the function maxLik in the R package maxLik}
 }
 \value{
 a list with three components: output of maxLik function,
-estimated parameters for
+estimated parameters for 
 each column using censored maximum likelihood, and estimated
 AUC and its standard error.
 }

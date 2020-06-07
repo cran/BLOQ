@@ -7,6 +7,8 @@
 ### Author: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 ### maintainer: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 #################################################################
+
+
 #' function to compute the cendored log-likelihood function
 #' for a given row of the data
 #' @param inputRow vector a given row of the data

@@ -24,7 +24,14 @@
 #' an additive error model (FALSE) or a multiplicative error
 #' model (TRUE) should be used 
 #' @param onlyFitCML logical variable with FALSE as default, if TRUE only the
-#' censored maximum likelihood estimates will be calculated
+#' censored maximum likelihood estimates will be calculated.
+#' @param optimizationMethod single string specifying the method to be used for optimizing the log-likelihood, 
+#' the default is NULL that allows the function to decide the about the best method. Otherwise, one can select among choices
+#' available via R package maxLik: "NR" (for Newton-Raphson), "BFGS" (for Broyden-Fletcher-Goldfarb-Shanno), 
+#' "BFGSR" (for the BFGS algorithm implemented in R), 
+#' "BHHH" (for Berndt-Hall-Hall-Hausman), "SANN" (for Simulated ANNealing), 
+#' "CG" (for Conjugate Gradients), or "NM" (for Nelder-Mead). 
+#' Lower-case letters (such as "nr" for Newton-Raphson) are allowed.
 #' @param CMLcontrol list of arguments to control 
 #' convergence of maximization algorithm. It is the same argument
 #' as control in the function maxLik in the R package maxLik
@@ -47,6 +54,7 @@
 
 estimateAUCwithPairwiseCML <- function(inputData, LOQ, 
 		timePoints, isMultiplicative = FALSE, onlyFitCML = FALSE,
+		optimizationMethod = NULL,
 		CMLcontrol = NULL, na.rm = TRUE){
 	
 	if (isMultiplicative & any(inputData <= 0)){
@@ -89,7 +97,8 @@ estimateAUCwithPairwiseCML <- function(inputData, LOQ,
 		}
 		fitPair <- estimateAUCwithFullCML(pairInputData, LOQ, 
 				timePoints[allPairsIdx[,iPairs]], isMultiplicative, onlyFitCML = TRUE,
-				printCMLmessage = FALSE, CMLcontrol, na.rm = FALSE)
+				printCMLmessage = FALSE, CMLcontrol, optimizationMethod = optimizationMethod,
+				na.rm = FALSE)
 		estMu[iPairs, allPairsIdx[,iPairs]] <- fitPair$estCML$mu
 		tmpSigma <- matrix(NA, numTimePoints, numTimePoints)
 		tmpSigma[allPairsIdx[,iPairs], allPairsIdx[,iPairs]] <- fitPair$estCML$Sigma

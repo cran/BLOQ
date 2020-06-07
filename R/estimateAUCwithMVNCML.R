@@ -30,6 +30,13 @@
 #' @param printCMLmessage logical variable with TRUE as default, if TRUE then
 #' messages regarding the convergence status of censored 
 #' log-likelihood maximization will be printed.
+#' @param optimizationMethod single string specifying the method to be used for optimizing the log-likelihood, 
+#' the default is NULL that allows the function to decide the about the best method. Otherwise, one can select among choices
+#' available via R package maxLik: "NR" (for Newton-Raphson), "BFGS" (for Broyden-Fletcher-Goldfarb-Shanno), 
+#' "BFGSR" (for the BFGS algorithm implemented in R), 
+#' "BHHH" (for Berndt-Hall-Hall-Hausman), "SANN" (for Simulated ANNealing), 
+#' "CG" (for Conjugate Gradients), or "NM" (for Nelder-Mead). 
+#' Lower-case letters (such as "nr" for Newton-Raphson) are allowed.
 #' @param CMLcontrol list of arguments to control 
 #' convergence of maximization algorithm. It is the same argument
 #' as control in the function maxLik in the R package maxLik
@@ -55,16 +62,17 @@
 #' @export
 estimateAUCwithMVNCML <- function(inputData, LOQ, 
 		timePoints, isMultiplicative = FALSE, onlyFitCML = FALSE,
-		printCMLmessage = TRUE, CMLcontrol = NULL, na.rm = TRUE, isPairwise = FALSE){
+		printCMLmessage = TRUE, optimizationMethod = NULL,
+		CMLcontrol = NULL, na.rm = TRUE, isPairwise = FALSE){
 	## Use one of two options based on the value of isPairwise
 	if (isPairwise){
 		outputResults <- estimateAUCwithPairwiseCML (inputData, LOQ, 
-				timePoints, isMultiplicative, onlyFitCML,
+				timePoints, isMultiplicative, onlyFitCML, optimizationMethod = optimizationMethod,
 				CMLcontrol, na.rm)
 	}else{
 		outputResults <- estimateAUCwithFullCML (inputData, LOQ, 
 				timePoints, isMultiplicative, onlyFitCML,
-				printCMLmessage, CMLcontrol, na.rm)
+				printCMLmessage, optimizationMethod = optimizationMethod, CMLcontrol, na.rm)
 	}
 	return(outputResults)
 }

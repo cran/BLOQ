@@ -5,6 +5,7 @@
 ### Author: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 ### maintainer: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 #################################################################
+
 #' imputing BLOQ's using kernel density estimation
 #' 
 #' function to impute BLOQ observations using kernel density 
@@ -26,7 +27,7 @@
 #' # generate data from Beal model with only fixed effects
 #' set.seed(111)
 #' genDataFixedEffects <- simulateBealModelFixedEffects(10, 0.693,
-#' 		1, 1, seq(0.5,3,0.5))
+#' + 		1, 1, seq(0.5,3,0.5))
 #' imputeKernelDensityEstimation(genDataFixedEffects, 0.1, epsilon = 1e-05)
 #' @author Vahid Nassiri, Helen Yvette Barnett
 #' @export

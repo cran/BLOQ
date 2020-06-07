@@ -5,8 +5,13 @@
 \alias{simulateBealModelFixedEffects}
 \title{simulate data from Beal model with fixed effects}
 \usage{
-simulateBealModelFixedEffects(numSubjects, clearance, volumeOfDistribution,
-  dose, timePoints)
+simulateBealModelFixedEffects(
+  numSubjects,
+  clearance,
+  volumeOfDistribution,
+  dose,
+  timePoints
+)
 }
 \arguments{
 \item{numSubjects}{scalar, number of subject which should be generated}
@@ -38,7 +43,7 @@ The error model is consdiered as \eqn{e(t) \sim N(0, h(t))}, with:
 \examples{
 set.seed(111)
 simulateBealModelFixedEffects(10, 0.693,
- 		1, 1, seq(0.5,3,0.5))
++ 		1, 1, seq(0.5,3,0.5))
 }
 \seealso{
 Beal S. L., Ways to fit a PK model with some data below 

@@ -9,6 +9,7 @@
 ### Author: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 ### maintainer: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 #################################################################
+
 #' Estimate AUC and its standard error
 #' 
 #' function to estimate AUC and compute standard error of this
@@ -28,7 +29,7 @@
 #' # generate data from Beal model with only fixed effects
 #' set.seed(111)
 #' genDataFixedEffects <- simulateBealModelFixedEffects(10, 0.693,
-#'  		1, 1, seq(0.5,3,0.5))
+#' + 		1, 1, seq(0.5,3,0.5))
 #' # Impute the data with BLOQ's with one of the provided methods,
 #' # for example, here we use ROS
 #' imputedDataROS <- imputeROS(genDataFixedEffects, 0.1)

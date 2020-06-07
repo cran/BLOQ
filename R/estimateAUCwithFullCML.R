@@ -31,6 +31,13 @@
 #' @param printCMLmessage logical variable with TRUE as default, if TRUE then
 #' messages regarding the convergence status of censored 
 #' log-likelihood maximization will be printed.
+#' @param optimizationMethod single string specifying the method to be used for optimizing the log-likelihood, 
+#' the default is NULL that allows the function to decide the about the best method. Otherwise, one can select among choices
+#' available via R package maxLik: "NR" (for Newton-Raphson), "BFGS" (for Broyden-Fletcher-Goldfarb-Shanno), 
+#' "BFGSR" (for the BFGS algorithm implemented in R), 
+#' "BHHH" (for Berndt-Hall-Hall-Hausman), "SANN" (for Simulated ANNealing), 
+#' "CG" (for Conjugate Gradients), or "NM" (for Nelder-Mead). 
+#' Lower-case letters (such as "nr" for Newton-Raphson) are allowed.
 #' @param CMLcontrol list of arguments to control 
 #' convergence of maximization algorithm. It is the same argument
 #' as control in the function maxLik in the R package maxLik
@@ -52,7 +59,7 @@
 #' @export
 estimateAUCwithFullCML <- function(inputData, LOQ, 
 		timePoints, isMultiplicative = FALSE, onlyFitCML = FALSE,
-		printCMLmessage = TRUE, CMLcontrol = NULL, na.rm = TRUE){
+		printCMLmessage = TRUE, optimizationMethod = NULL, CMLcontrol = NULL, na.rm = TRUE){
 	## With multiplicative error, dur to takign logarithm,
 	## zero values are not allowed, so first we check this 
 	if (isMultiplicative & any(inputData <= 0)){
@@ -78,14 +85,18 @@ the inputData are not allowed with multiplicative error model.")
 	## First based on the value of isMultiplicative the log of the
 	## data as well as the LOQ will be taken.
 	if (isMultiplicative){
-		inputData <- log(inputData)
-		LOQ <- log(LOQ)
+		inputData <- log10(inputData)
+		LOQ <- log10(LOQ)
 	}
 	## computing starting values by first replacing all BLOQ's with
 	## LOQ and then fit the likelihood to the NOW non-censored data
 	startValuesData <- imputeConstant(inputData, LOQ, LOQ)
 	#require("mvnmle")
-	startValuesEst <- mlest(startValuesData)
+	# as mvnmle becomes orphan now, we may remove this dependency as follows.
+	#startValuesEst <- mlest(startValuesData)
+	startValuesEst <- list()
+	startValuesEst$muhat <- apply(startValuesData, 2, mean)
+	startValuesEst$sigmahat <- cov(startValuesData)* (nrow(startValuesData)-1) / nrow(startValuesData)
 	startMeanEst <- startValuesEst$muhat
 	startCovMatEst <- startValuesEst$sigmahat
 	startValues <- as.numeric(c(startMeanEst, 
@@ -93,16 +104,31 @@ the inputData are not allowed with multiplicative error model.")
 	## Computing the CMLE, the maximization method is fixed by
 	## Conjugate Gradient
 	#require("maxLik")
-	invisible(ifelse(isMultiplicative,
-					fitCML <- try(maxLik(logLik=computeMVNLogLik, 
-							inputData = inputData, LOQ = LOQ, 
-							isMultiplicative = TRUE, start = startValues, 
-							control = CMLcontrol)),
-					fitCML <- try(maxLik(logLik=computeMVNLogLik, 
-							inputData = inputData, LOQ = LOQ, 
-							isMultiplicative = FALSE, 
-							start = startValues, 
-							control = CMLcontrol))))
+	if (is.null(optimizationMethod)){
+		invisible(ifelse(isMultiplicative,
+						fitCML <- try(maxLik(logLik=computeMVNLogLik, 
+										inputData = inputData, LOQ = LOQ, 
+										isMultiplicative = TRUE, start = startValues, 
+										control = CMLcontrol)),
+						fitCML <- try(maxLik(logLik=computeMVNLogLik, 
+										inputData = inputData, LOQ = LOQ, 
+										isMultiplicative = FALSE, 
+										start = startValues, 
+										control = CMLcontrol))))
+	}else{
+		invisible(ifelse(isMultiplicative,
+						fitCML <- try(maxLik(logLik=computeMVNLogLik, 
+										inputData = inputData, LOQ = LOQ, 
+										isMultiplicative = TRUE, start = startValues, 
+										method = optimizationMethod,
+										control = CMLcontrol)),
+						fitCML <- try(maxLik(logLik=computeMVNLogLik, 
+										inputData = inputData, LOQ = LOQ, 
+										isMultiplicative = FALSE, 
+										start = startValues, , 
+										method = optimizationMethod,
+										control = CMLcontrol))))
+	}
 	
 	if (is.character(fitCML)){
 		stop(paste("The optimization function stopped with the following message:",fitCML))

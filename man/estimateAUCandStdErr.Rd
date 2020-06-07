@@ -5,8 +5,12 @@
 \alias{estimateAUCandStdErr}
 \title{Estimate AUC and its standard error}
 \usage{
-estimateAUCandStdErr(imputedData, timePoints, isMultiplicative = FALSE,
-  na.rm = FALSE)
+estimateAUCandStdErr(
+  imputedData,
+  timePoints,
+  isMultiplicative = FALSE,
+  na.rm = FALSE
+)
 }
 \arguments{
 \item{imputedData}{numeric matrix or data frame of size 
@@ -33,7 +37,7 @@ estimate
 # generate data from Beal model with only fixed effects
 set.seed(111)
 genDataFixedEffects <- simulateBealModelFixedEffects(10, 0.693,
- 		1, 1, seq(0.5,3,0.5))
++ 		1, 1, seq(0.5,3,0.5))
 # Impute the data with BLOQ's with one of the provided methods,
 # for example, here we use ROS
 imputedDataROS <- imputeROS(genDataFixedEffects, 0.1)

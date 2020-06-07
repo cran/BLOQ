@@ -5,6 +5,8 @@
 ### Author: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 ### maintainer: Vahid Nassiri <vahid.nassiri@openanalytics.eu>
 #################################################################
+
+
 #' simulate data from Beal model with fixed and random effects
 #' 
 #' function to generate data from a Beal model with fixed effects
@@ -36,7 +38,7 @@
 #' @examples
 #' set.seed(111)
 #' simulateBealModelMixedEffects(10, 0.693,
-#' 		1, 1, 0.2,0.2, seq(0.5,3,0.5))
+#' + 		1, 1, 0.2,0.2, seq(0.5,3,0.5))
 #' @author Vahid Nassiri, Helen Yvette Barnett
 #' @export
 

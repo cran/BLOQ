@@ -5,8 +5,14 @@
 \alias{imputeCML}
 \title{imputing BLOQ's using censored maximum likelihood}
 \usage{
-imputeCML(inputData, LOQ, isMultiplicative = FALSE, useSeed = runif(1),
-  printCMLmessage = TRUE, CMLcontrol = NULL)
+imputeCML(
+  inputData,
+  LOQ,
+  isMultiplicative = FALSE,
+  useSeed = runif(1),
+  printCMLmessage = TRUE,
+  CMLcontrol = NULL
+)
 }
 \arguments{
 \item{inputData}{numeric matrix or data frame of the size 
@@ -44,7 +50,7 @@ censored maximum likelihood
 # generate data from Beal model with only fixed effects
 set.seed(111)
 genDataFixedEffects <- simulateBealModelFixedEffects(10, 0.693,
-		1, 1, seq(0.5,3,0.5))
++ 		1, 1, seq(0.5,3,0.5))
 imputeCML(genDataFixedEffects, 0.1, FALSE, 1)
 }
 \seealso{

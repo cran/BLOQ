@@ -5,8 +5,13 @@
 \alias{imputeKernelDensityEstimation}
 \title{imputing BLOQ's using kernel density estimation}
 \usage{
-imputeKernelDensityEstimation(inputData, LOQ, epsilon = 1e-07,
-  maxIter = 1000, useSeed = runif(1))
+imputeKernelDensityEstimation(
+  inputData,
+  LOQ,
+  epsilon = 1e-07,
+  maxIter = 1000,
+  useSeed = runif(1)
+)
 }
 \arguments{
 \item{inputData}{numeric matrix or data frame of the size 
@@ -36,7 +41,7 @@ estimation.
 # generate data from Beal model with only fixed effects
 set.seed(111)
 genDataFixedEffects <- simulateBealModelFixedEffects(10, 0.693,
-		1, 1, seq(0.5,3,0.5))
++ 		1, 1, seq(0.5,3,0.5))
 imputeKernelDensityEstimation(genDataFixedEffects, 0.1, epsilon = 1e-05)
 }
 \author{

@@ -5,8 +5,15 @@
 \alias{simulateBealModelMixedEffects}
 \title{simulate data from Beal model with fixed and random effects}
 \usage{
-simulateBealModelMixedEffects(numSubjects, clearance, volumeOfDistribution,
-  dose, varCompClearance, varCompVolumeOfDistribution, timePoints)
+simulateBealModelMixedEffects(
+  numSubjects,
+  clearance,
+  volumeOfDistribution,
+  dose,
+  varCompClearance,
+  varCompVolumeOfDistribution,
+  timePoints
+)
 }
 \arguments{
 \item{numSubjects}{scalar, number of subject which should be generated}
@@ -48,7 +55,7 @@ For the mixed effects model, \eqn{CL=\widetilde{CL} \exp{(\eta_1)}}, and
 \examples{
 set.seed(111)
 simulateBealModelMixedEffects(10, 0.693,
-		1, 1, 0.2,0.2, seq(0.5,3,0.5))
++ 		1, 1, 0.2,0.2, seq(0.5,3,0.5))
 }
 \seealso{
 Beal S. L., Ways to fit a PK model with some data below the quantification limit, Journal of Pharmacokinetics
